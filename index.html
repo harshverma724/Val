@@ -16,10 +16,11 @@
             text-align: center;
             color: #8b5e7a;
             overflow: hidden;
+            flex-direction: column;
         }
 
         h1 {
-            font-size: 3em;
+            font-size: 2.5em;
             margin-bottom: 20px;
             animation: fadeIn 1s ease-out;
         }
@@ -27,7 +28,9 @@
         .button-container {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 30px;
+            position: relative;
         }
 
         .btn {
@@ -37,7 +40,6 @@
             border: none;
             border-radius: 5px;
             transition: all 0.3s ease;
-            position: relative;
         }
 
         .no-btn {
@@ -48,7 +50,7 @@
         .yes-btn {
             background-color: #61ff6f;
             color: white;
-            transition: all 0.3s ease;
+            position: relative; /* Keep Yes button fixed */
         }
 
         .btn:hover {
@@ -58,12 +60,12 @@
         /* Couple GIF Overlay */
         .couple-gif {
             display: none;
-            position: fixed; /* Use fixed position to make sure it covers the screen */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(255, 255, 255, 0.8); /* Slight overlay effect */
+            background-color: rgba(255, 255, 255, 0.8);
             justify-content: center;
             align-items: center;
             z-index: 10;
@@ -76,12 +78,11 @@
             height: 100%;
         }
 
-        /* Ensure the GIF covers the full screen without distortion */
         .gif-content img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Make the GIF cover the screen */
-            object-position: center; /* Center the GIF */
+            object-fit: cover;
+            object-position: center;
             animation: fadeIn 2s ease-in-out;
         }
 
@@ -109,8 +110,7 @@
     <!-- Couple GIF Overlay -->
     <div class="couple-gif" id="coupleGif">
         <div class="gif-content">
-            <!-- Replace with the direct URL of the GIF you want to use -->
-            <img src="https://media.tenor.com/images/f69df602b2469f9f6ed1e394d13be8e1/tenor.gif" alt="Kiss GIF">
+            <img src="puuung-kiss-puuung.gif" alt="Kiss GIF">
         </div>
     </div>
 
@@ -118,20 +118,18 @@
         const noBtn = document.getElementById("noBtn");
         const yesBtn = document.getElementById("yesBtn");
         const coupleGif = document.getElementById("coupleGif");
-        let growCount = 0; // Counter for No button clicks
-        const maxNoClicks = 3; // Limit to 3 "No" clicks
+
+        // "No" button initially centered with "Yes" button
+        noBtn.style.position = "relative";  // Set the position to relative within the flex container
 
         noBtn.addEventListener("click", function() {
-            growCount++;
-            if (growCount < maxNoClicks) {
-                let scale = 1 + (growCount * 0.3); // Button grows incrementally with each "No" click
-                yesBtn.style.transform = `scaleX(${scale}) scaleY(${scale})`; // Grow both width and height
-            }
-            // After 3 "No" clicks, make the Yes button fill the screen
-            if (growCount >= maxNoClicks) {
-                yesBtn.style.transform = `scaleX(100) scaleY(100)`; // This will make the button cover the entire screen
-                noBtn.disabled = true; // Disable the "No" button after 3 clicks
-            }
+            // Randomly change the position of the No button after clicking
+            const randomX = Math.random() * 80; // 80% of the screen width
+            const randomY = Math.random() * 80; // 80% of the screen height
+
+            noBtn.style.position = "absolute";  // Change to absolute so we can move it
+            noBtn.style.left = `${randomX}%`;
+            noBtn.style.top = `${randomY}%`;
         });
 
         yesBtn.addEventListener("click", function() {
